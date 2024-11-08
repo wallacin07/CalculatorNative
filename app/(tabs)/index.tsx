@@ -1,9 +1,25 @@
 import React from "react";
-import { StyleSheet, Text, View, StatusBar, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, StatusBar, SafeAreaView, TouchableOpacity, Image } from "react-native";
 
 import Row from "../../components/Row";
 import Button from "../../components/Button";
-import calculator, { initialState, CalculatorState } from "../../util/calculator";
+import calculator from "../../util/calculator";
+
+
+interface CalculatorState {
+  currentValue: string;
+  operator: string | null;
+  previousState: string | null;
+  scientificCalculator: boolean
+}
+
+const initialState: CalculatorState = {
+  currentValue : '0',
+  operator: null,
+  previousState:null,
+  scientificCalculator: false
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -17,17 +33,42 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginRight: 20,
     marginBottom: 10
+  },
+  button: {
+    backgroundColor: "#333333",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 5,
+    borderRadius: 60,
+  },
+  img: {
+    width: 40,
+    height:40
   }
 });
 
-type OperationType = "number" | "operator" | "clear" | "posneg" | "percentage" | "equal";
+
 
 export default class App extends React.Component<{}, CalculatorState> {
-  state: CalculatorState = initialState;
+  state = initialState;
 
-  handleTap = (type: OperationType, value?: string | number) => {
-    this.setState((state) => calculator(type, value, state));
+
+  handleTap = (type: string, value?: string | number) => {
+    if (type === "operator" && ["x^3", "√", "π"].includes(value as string)) {
+      this.setState((state) => calculator(type, value, state));
+    } else {
+      this.setState((state) => calculator(type, value, state));
+    }
   };
+
+  handleCalculator = () => {
+    this.setState((prevState) => ({
+      scientificCalculator: !prevState.scientificCalculator,
+    }),() =>{
+      console.log(this.state.scientificCalculator)
+    })
+  }
 
   render() {
     return (
@@ -59,6 +100,11 @@ export default class App extends React.Component<{}, CalculatorState> {
               theme="accent"
               onPress={() => this.handleTap("operator", "/")}
             />
+            <Button
+              text="x^y"
+              theme="accent"
+              onPress={() => this.handleTap("operator", "x^y")}
+            />
           </Row>
 
           <Row>
@@ -69,6 +115,11 @@ export default class App extends React.Component<{}, CalculatorState> {
               text="x"
               theme="accent"
               onPress={() => this.handleTap("operator", "*")}
+            />
+            <Button
+              text="x^3"
+              theme="accent"
+              onPress={() => this.handleTap("operator", "x^3")}
             />
           </Row>
 
@@ -81,6 +132,11 @@ export default class App extends React.Component<{}, CalculatorState> {
               theme="accent"
               onPress={() => this.handleTap("operator", "-")}
             />
+            <Button
+              text="√"
+              theme="accent"
+              onPress={() => this.handleTap("operator", "√")}
+            />
           </Row>
 
           <Row>
@@ -92,9 +148,18 @@ export default class App extends React.Component<{}, CalculatorState> {
               theme="accent"
               onPress={() => this.handleTap("operator", "+")}
             />
+            <Button
+              text="π"
+              theme="accent"
+              onPress={() => this.handleTap("operator", "π")}
+            />
           </Row>
 
           <Row>
+
+            <TouchableOpacity style={styles.button}>
+                <Image source={require("../../assets/images/calculadora.svg")} style={styles.img}></Image>
+            </TouchableOpacity>
             <Button
               text="0"
               size="single"

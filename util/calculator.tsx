@@ -1,4 +1,4 @@
-// util/calculator.ts
+
 
 export interface CalculatorState {
     currentValue: string;
@@ -14,11 +14,11 @@ export interface CalculatorState {
   
   type OperationType = "number" | "operator" | "clear" | "posneg" | "percentage" | "equal";
   
-  export default function calculator(
-    type: OperationType,
-    value: string | number | undefined,
-    state: CalculatorState
-  ): CalculatorState {
+  const calculator = (
+    type: string,
+    value: any,
+    state: any
+  ) => {
     switch (type) {
       case "number":
         return {
@@ -26,6 +26,24 @@ export interface CalculatorState {
           currentValue: state.currentValue === "0" ? String(value) : state.currentValue + value
         };
       case "operator":
+        if (value === "x^3") {
+          return {
+            ...state,
+            currentValue: (parseFloat(state.currentValue) ** 3).toString(),
+          };
+        }
+        if (value === "√") {
+          return {
+            ...state,
+            currentValue: Math.sqrt(parseFloat(state.currentValue)).toString(),
+          };
+        }
+        if (value === "π") {
+          return {
+            ...state,
+            currentValue: "3.14",
+          };
+        }
         return {
           ...state,
           operator: String(value),
@@ -53,9 +71,11 @@ export interface CalculatorState {
         if (operator === "-") return { ...state, currentValue: (previous - current).toString(), operator: null, previousValue: null };
         if (operator === "*") return { ...state, currentValue: (previous * current).toString(), operator: null, previousValue: null };
         if (operator === "/") return { ...state, currentValue: (previous / current).toString(), operator: null, previousValue: null };
+        if (operator === "x^y") return { ...state, currentValue: (previous ** current).toString(), operator: null, previousValue: null };
         return state;
       default:
         return state;
     }
-  }
+  };
+  export default calculator
   

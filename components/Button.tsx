@@ -61,12 +61,11 @@ import { TouchableOpacity, StyleSheet, Text, Dimensions, GestureResponderEvent, 
 const screen = Dimensions.get("window");
 const buttonWidth = screen.width / 4;
 
-// Definindo os tipos para as props
 interface ButtonProps {
   onPress: (event: GestureResponderEvent) => void;
   text: string;
-  size?: "single" | "double"; // Pode ser "single" ou "double"
-  theme?: "primary" | "secondary" | "accent"; // Definindo os temas possíveis
+  size?: "single" | "double"; 
+  theme?: "primary" | "secondary" | "accent"; 
 }
 
 const styles = StyleSheet.create({
@@ -100,17 +99,16 @@ const styles = StyleSheet.create({
   },
 });
 
-// O tipo correto para o TouchableOpacity pode ser um estilo de ViewStyle
 const Button: React.FC<ButtonProps> = ({ onPress, text, size, theme }) => {
-  const buttonStyles: ViewStyle[] = [styles.button]; // Definindo o tipo correto para buttonStyles
-  const textStyles: TextStyle[] = [styles.text];   // Definindo o tipo correto para textStyles
+  const buttonStyles: ViewStyle[] = [styles.button];
+  const textStyles: TextStyle[] = [styles.text];   
 
-  // Condicionalmente adicionando estilos conforme o tamanho
+
   if (size === "double") {
     buttonStyles.push(styles.buttonDouble);
   }
 
-  // Alterando estilos conforme o tema
+ 
   if (theme === "secondary") {
     buttonStyles.push(styles.buttonSecondary);
     textStyles.push(styles.textSecondary);

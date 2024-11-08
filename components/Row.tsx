@@ -2,7 +2,7 @@ import React from "react";
 import { View, ViewStyle } from "react-native";
 
 interface RowProps {
-  children: React.ReactNode; // Tipando children corretamente
+  children: React.ReactNode; 
 }
 
 const Row: React.FC<RowProps> = ({ children }) => {
